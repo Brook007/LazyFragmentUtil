@@ -13,10 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class Parent2Fragment extends Fragment {
+public class Parent2Fragment extends LazyFragment {
 
-
-    private int index;
 
     public static Fragment newInstance(int index) {
         Parent2Fragment parentFragment = new Parent2Fragment();
@@ -27,12 +25,9 @@ public class Parent2Fragment extends Fragment {
         return parentFragment;
     }
 
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Bundle arguments = getArguments();
-        index = arguments.getInt("index");
-        Log.d("Brook", this.getClass().getName() + "#onCreateView=" + index);
+    public View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_parent, container, false);
     }
 
@@ -48,35 +43,4 @@ public class Parent2Fragment extends Fragment {
         fragmentTransaction.commitNowAllowingStateLoss();
     }
 
-    private void loadData() {
-        Log.d("Brook", this.getClass().getName() + "#loadData=" + index);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("Brook", this.getClass().getName() + "#onResume=" + index);
-        loadData();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("Brook", this.getClass().getName() + "#onPause=" + index);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("Brook", this.getClass().getName() + "#onStop=" + index);
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.d("Brook", this.getClass().getName() + "#onHiddenChanged==" + index);
-        if (!hidden) {
-            loadData();
-        }
-    }
 }

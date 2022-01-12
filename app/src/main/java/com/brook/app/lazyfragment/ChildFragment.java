@@ -11,10 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class ChildFragment extends Fragment {
+public class ChildFragment extends LazyFragment {
 
-
-    private int index;
 
     public static Fragment newInstance(int index) {
         ChildFragment parentFragment = new ChildFragment();
@@ -26,12 +24,8 @@ public class ChildFragment extends Fragment {
     }
 
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Bundle arguments = getArguments();
-        index = arguments.getInt("index");
-        Log.d("Brook", this.getClass().getName() + "#onCreateView=" + index);
+    public View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_child, container, false);
     }
 
@@ -42,37 +36,4 @@ public class ChildFragment extends Fragment {
         viewById.setText("子Fragment:" + index);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("Brook", this.getClass().getName() + "#onResume=" + index);
-
-        loadData();
-    }
-
-    private void loadData() {
-        Log.d("Brook", this.getClass().getName() + "#loadData=" + index);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("Brook", this.getClass().getName() + "#onPause=" + index);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("Brook", this.getClass().getName() + "#onStop=" + index);
-    }
-
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.d("Brook", this.getClass().getName() + "#onHiddenChanged==" + index);
-        if (!hidden) {
-            loadData();
-        }
-    }
 }

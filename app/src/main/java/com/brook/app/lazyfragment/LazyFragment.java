@@ -103,7 +103,7 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onStop=" + index);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onHiddenChanged=" + index);
         if (rootViewCreate) {
             dispatchVisibleChange(hidden);
         }

@@ -37,10 +37,9 @@ public abstract class LazyFragment extends Fragment {
     @Override
     @CallSuper
     public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onCreateView=" + index);
         View rootView = createView(inflater, container, savedInstanceState);
         rootViewCreate = true;
-        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onCreateView=" + index);
         return rootView;
     }
 
@@ -104,6 +103,7 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onStop=" + index);
         if (rootViewCreate) {
             dispatchVisibleChange(hidden);
         }
@@ -112,6 +112,7 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onStop=" + index);
         if (rootViewCreate) {
             dispatchVisibleChange(!isVisibleToUser);
         }

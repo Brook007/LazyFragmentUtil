@@ -112,7 +112,7 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onStop=" + index);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#setUserVisibleHint(" + isVisibleToUser + ")=" + index);
         if (rootViewCreate) {
             dispatchVisibleChange(!isVisibleToUser);
         }

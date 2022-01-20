@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <Button
         android:layout_width="wrap_content"
-        android:text="ShowHideFragment"
+        android:layout_height="wrap_content"
         android:onClick="showHide"
-        android:layout_height="wrap_content"/>
+        android:text="单层ShowHideFragment" />
 
     <Button
         android:layout_width="wrap_content"
-        android:text="viewpagerFragment"
+        android:layout_height="wrap_content"
+        android:onClick="multiFragmentShowHide"
+        android:text="嵌套ShowHideFragment" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="viewpager"
-        android:layout_height="wrap_content"/>
+        android:text="单层ViewPagerFragment" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="multiViewPager"
+        android:text="嵌套VewPagerFragment" />
 
 </LinearLayout>

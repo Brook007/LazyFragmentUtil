@@ -15,8 +15,6 @@ import androidx.fragment.app.FragmentTransaction;
 public class ParentFragment extends LazyFragment {
 
 
-    private int index;
-
     public static Fragment newInstance(int index) {
         ParentFragment parentFragment = new ParentFragment();
         Bundle bundle = new Bundle();
@@ -33,6 +31,7 @@ public class ParentFragment extends LazyFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         Button btn = view.findViewById(R.id.parent_btn);
 
         btn.setText("父Fragment:" + index);

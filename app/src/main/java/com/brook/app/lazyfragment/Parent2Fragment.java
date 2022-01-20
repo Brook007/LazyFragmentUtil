@@ -1,7 +1,6 @@
 package com.brook.app.lazyfragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +32,7 @@ public class Parent2Fragment extends LazyFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         Button btn = view.findViewById(R.id.parent_btn);
 
         btn.setText("父2Fragment:" + index);

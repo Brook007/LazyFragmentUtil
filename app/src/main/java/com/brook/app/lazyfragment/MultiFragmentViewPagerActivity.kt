@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 
-class ViewPagerActivity : AppCompatActivity() {
+class MultiFragmentViewPagerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,7 @@ class ViewPagerActivity : AppCompatActivity() {
             }
 
             override fun getItem(position: Int): Fragment {
-                return ChildFragment.newInstance(position)
+                return ParentFragment.newInstance(position)
             }
 
         }

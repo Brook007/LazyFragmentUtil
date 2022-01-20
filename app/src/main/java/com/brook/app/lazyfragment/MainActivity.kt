@@ -11,17 +11,40 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun viewpager(view: android.view.View) {
-        startActivity(Intent(
-            this,
-            ViewpagerActivity::class.java
-        ))
-    }
 
     fun showHide(view: android.view.View) {
-        startActivity(Intent(
-            this,
-            ShowHideFragmentTestActivity::class.java
-        ))
+        startActivity(
+            Intent(
+                this,
+                ShowHideFragmentTestActivity::class.java
+            )
+        )
+    }
+
+    fun multiFragmentShowHide(view: android.view.View) {
+        startActivity(
+            Intent(
+                this,
+                MultiFragmentShowHideActivity::class.java
+            )
+        )
+    }
+
+    fun viewpager(view: android.view.View) {
+        startActivity(
+            Intent(
+                this,
+                ViewPagerActivity::class.java
+            )
+        )
+    }
+
+    fun multiViewPager(view: android.view.View) {
+        startActivity(
+            Intent(
+                this,
+                MultiFragmentViewPagerActivity::class.java
+            )
+        )
     }
 }

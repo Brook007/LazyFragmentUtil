@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 
 import java.util.List;
 
@@ -20,15 +21,38 @@ public abstract class LazyFragment extends Fragment {
     private boolean rootViewCreate = false;
 
 
-    @Nullable
+    public LazyFragment() {
+    }
+
+
     @Override
-    public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         index = arguments.getInt("index");
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onCreate=" + index);
+    }
+
+    @Nullable
+    @Override
+    @CallSuper
+    public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View rootView = createView(inflater, container, savedInstanceState);
         rootViewCreate = true;
-        Log.d("Brook", this.getClass().getName() + "#onCreateView=" + index);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onCreateView=" + index);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onViewCreated=" + index);
+        FragmentManager childFragmentManager = getChildFragmentManager();
+        List<Fragment> fragments = childFragmentManager.getFragments();
+        for (Fragment fragment : fragments) {
+            fragment.setUserVisibleHint(getUserVisibleHint());
+        }
     }
 
     public abstract View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
@@ -37,17 +61,14 @@ public abstract class LazyFragment extends Fragment {
         FragmentManager childFragmentManager = getChildFragmentManager();
         List<Fragment> fragments = childFragmentManager.getFragments();
         if (!hidden) {
-            Log.e("Brook", this.getClass().getName() + "#开始加载数据=" + index);
-            for (Fragment fragment : fragments) {
-                if (fragment instanceof LazyFragment) {
-                    ((LazyFragment) fragment).dispatchVisibleChange(false);
-                }
-            }
+            Log.e("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#对用户可见=" + index);
         } else {
-            Log.e("Brook", this.getClass().getName() + "#停止加载数据=" + index);
-            for (Fragment fragment : fragments) {
-                if (fragment instanceof LazyFragment) {
-                    ((LazyFragment) fragment).dispatchVisibleChange(true);
+            Log.e("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#对用户不可见=" + index);
+        }
+        for (Fragment fragment : fragments) {
+            if (fragment instanceof LazyFragment) {
+                if (fragment.getLifecycle().getCurrentState().ordinal() >= Lifecycle.State.RESUMED.ordinal()) {
+                    ((LazyFragment) fragment).dispatchVisibleChange(hidden);
                 }
             }
         }
@@ -57,9 +78,11 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("Brook", this.getClass().getName() + "#onResume=" + index);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onResume=" + index);
 
-        dispatchVisibleChange(false);
+        if (getUserVisibleHint()) {
+            dispatchVisibleChange(false);
+        }
     }
 
 
@@ -67,7 +90,7 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("Brook", this.getClass().getName() + "#onPause=" + index);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onPause=" + index);
         dispatchVisibleChange(true);
     }
 
@@ -75,14 +98,22 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d("Brook", this.getClass().getName() + "#onStop=" + index);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onStop=" + index);
     }
 
-    @CallSuper
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.d("Brook", this.getClass().getName() + "#onHiddenChanged==" + index);
-        dispatchVisibleChange(hidden);
+        if (rootViewCreate) {
+            dispatchVisibleChange(hidden);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (rootViewCreate) {
+            dispatchVisibleChange(!isVisibleToUser);
+        }
     }
 }

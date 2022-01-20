@@ -18,8 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewpagerActivity" />
+        <activity android:name=".ViewPagerActivity" />
         <activity android:name=".ShowHideFragmentTestActivity" />
+        <activity android:name=".MultiFragmentShowHideActivity" />
+        <activity android:name=".MultiFragmentViewPagerActivity" />
     </application>
 
 </manifest>

@@ -5,11 +5,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
-class ShowHideFragmentTestActivity : AppCompatActivity() {
+class MultiFragmentShowHideActivity : AppCompatActivity() {
 
     private var fragmentA: Fragment? = null
     private var fragmentB: Fragment? = null
     private var fragment: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +20,7 @@ class ShowHideFragmentTestActivity : AppCompatActivity() {
     fun change(view: View) {
         if (fragment) {
             if (fragmentB == null) {
-                fragmentB = ChildFragment.newInstance(1)
+                fragmentB = Parent2Fragment.newInstance(1)
             }
             val beginTransaction = supportFragmentManager.beginTransaction()
             if (!fragmentB!!.isAdded) {
@@ -32,7 +33,7 @@ class ShowHideFragmentTestActivity : AppCompatActivity() {
             beginTransaction.commitNowAllowingStateLoss()
         } else {
             if (fragmentA == null) {
-                fragmentA = ChildFragment.newInstance(0)
+                fragmentA = ParentFragment.newInstance(0)
             }
             val beginTransaction = supportFragmentManager.beginTransaction()
             if (!fragmentA!!.isAdded) {
@@ -46,5 +47,4 @@ class ShowHideFragmentTestActivity : AppCompatActivity() {
         }
         fragment = !fragment
     }
-
 }

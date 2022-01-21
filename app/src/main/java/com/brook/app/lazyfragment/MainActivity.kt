@@ -2,6 +2,7 @@ package com.brook.app.lazyfragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -11,8 +12,25 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun replace(view: View) {
+        startActivity(
+            Intent(
+                this,
+                ReplaceFragmentTestActivity::class.java
+            )
+        )
+    }
 
-    fun showHide(view: android.view.View) {
+    fun multiFragmentReplace(view: View) {
+        startActivity(
+            Intent(
+                this,
+                MultiFragmentReplaceActivity::class.java
+            )
+        )
+    }
+
+    fun showHide(view: View) {
         startActivity(
             Intent(
                 this,
@@ -21,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun multiFragmentShowHide(view: android.view.View) {
+    fun multiFragmentShowHide(view: View) {
         startActivity(
             Intent(
                 this,
@@ -30,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun viewpager(view: android.view.View) {
+    fun viewpager(view: View) {
         startActivity(
             Intent(
                 this,
@@ -39,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun multiViewPager(view: android.view.View) {
+    fun multiViewPager(view: View) {
         startActivity(
             Intent(
                 this,

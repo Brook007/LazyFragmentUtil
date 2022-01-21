@@ -22,6 +22,8 @@
         <activity android:name=".ShowHideFragmentTestActivity" />
         <activity android:name=".MultiFragmentShowHideActivity" />
         <activity android:name=".MultiFragmentViewPagerActivity" />
+        <activity android:name=".ReplaceFragmentTestActivity" />
+        <activity android:name=".MultiFragmentReplaceActivity" />
     </application>
 
 </manifest>

@@ -9,6 +9,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="replace"
+        android:text="单层ReplaceFragment" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="multiFragmentReplace"
+        android:text="嵌套ReplaceFragment" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="showHide"
         android:text="单层ShowHideFragment" />
 

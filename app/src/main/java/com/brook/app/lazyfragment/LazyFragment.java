@@ -18,7 +18,7 @@ import java.util.List;
 public abstract class LazyFragment extends Fragment {
 
     protected int index = 0;
-    private boolean rootViewCreate = false;
+    private boolean rootViewCreate = true;
 
 
     public LazyFragment() {
@@ -29,7 +29,9 @@ public abstract class LazyFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        index = arguments.getInt("index");
+        if (arguments != null) {
+            index = arguments.getInt("index");
+        }
         Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onCreate=" + index);
     }
 
@@ -57,6 +59,9 @@ public abstract class LazyFragment extends Fragment {
     public abstract View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
 
     public void dispatchVisibleChange(boolean hidden) {
+        if (!isAdded()) {
+            return;
+        }
         FragmentManager childFragmentManager = getChildFragmentManager();
         List<Fragment> fragments = childFragmentManager.getFragments();
         if (!hidden) {
@@ -67,7 +72,9 @@ public abstract class LazyFragment extends Fragment {
         for (Fragment fragment : fragments) {
             if (fragment instanceof LazyFragment) {
                 if (fragment.getLifecycle().getCurrentState().ordinal() >= Lifecycle.State.RESUMED.ordinal()) {
-                    ((LazyFragment) fragment).dispatchVisibleChange(hidden);
+                    if (fragment.getUserVisibleHint() != hidden) {
+                        ((LazyFragment) fragment).dispatchVisibleChange(hidden);
+                    }
                 }
             }
         }
@@ -80,7 +87,9 @@ public abstract class LazyFragment extends Fragment {
         Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onResume=" + index);
 
         if (getUserVisibleHint()) {
-            dispatchVisibleChange(false);
+            if (getParentFragment() == null || getParentFragment().getUserVisibleHint()) {
+                dispatchVisibleChange(false);
+            }
         }
     }
 

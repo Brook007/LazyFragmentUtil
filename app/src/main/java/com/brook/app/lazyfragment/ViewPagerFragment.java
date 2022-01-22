@@ -45,7 +45,7 @@ public class ViewPagerFragment extends LazyFragment {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                return ChildFragment.newInstance(index * 10 + position);
+                return BottomChildFragment.newInstance(index * 10 + position);
             }
         });
     }

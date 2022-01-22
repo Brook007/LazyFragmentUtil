@@ -38,7 +38,7 @@ public class ParentFragment extends LazyFragment {
 
         FragmentManager childFragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = childFragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.parent_fragment_container, ChildFragment.newInstance(index));
+        fragmentTransaction.replace(R.id.parent_fragment_container, BottomChildFragment.newInstance(index));
         fragmentTransaction.commitNowAllowingStateLoss();
     }
 

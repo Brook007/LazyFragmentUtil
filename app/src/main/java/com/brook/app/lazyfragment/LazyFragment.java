@@ -1,5 +1,6 @@
 package com.brook.app.lazyfragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,20 +11,27 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
 
-import java.util.List;
+import java.util.UUID;
 
-public abstract class LazyFragment extends Fragment {
+public abstract class LazyFragment extends Fragment implements FragmentUserVisibleController.UserVisibleControllerOwner {
 
+    private final FragmentUserVisibleController mFragmentController;
     protected int index = 0;
-    private boolean rootViewCreate = true;
+
+    protected String uid;
 
 
     public LazyFragment() {
+        mFragmentController = new FragmentUserVisibleController(this);
+        uid = UUID.randomUUID().toString().substring(0, 8);
     }
 
+    @NonNull
+    @Override
+    public FragmentUserVisibleController getController() {
+        return mFragmentController;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,13 +43,33 @@ public abstract class LazyFragment extends Fragment {
         Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onCreate=" + index);
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onAttach=" + index);
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onAttachFragment=" + index);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onDetach=" + index);
+    }
+
     @Nullable
     @Override
     @CallSuper
     public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onCreateView=" + index);
+
+        mFragmentController.onCreateView();
+
         View rootView = createView(inflater, container, savedInstanceState);
-        rootViewCreate = true;
         return rootView;
     }
 
@@ -49,36 +77,10 @@ public abstract class LazyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onViewCreated=" + index);
-        FragmentManager childFragmentManager = getChildFragmentManager();
-        List<Fragment> fragments = childFragmentManager.getFragments();
-        for (Fragment fragment : fragments) {
-            fragment.setUserVisibleHint(getUserVisibleHint());
-        }
+
     }
 
     public abstract View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
-
-    public void dispatchVisibleChange(boolean hidden) {
-        if (!isAdded()) {
-            return;
-        }
-        FragmentManager childFragmentManager = getChildFragmentManager();
-        List<Fragment> fragments = childFragmentManager.getFragments();
-        if (!hidden) {
-            Log.e("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#对用户可见=" + index);
-        } else {
-            Log.e("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#对用户不可见=" + index);
-        }
-        for (Fragment fragment : fragments) {
-            if (fragment instanceof LazyFragment) {
-                if (fragment.getLifecycle().getCurrentState().ordinal() >= Lifecycle.State.RESUMED.ordinal()) {
-                    if (fragment.getUserVisibleHint() != hidden) {
-                        ((LazyFragment) fragment).dispatchVisibleChange(hidden);
-                    }
-                }
-            }
-        }
-    }
 
 
     @Override
@@ -86,11 +88,7 @@ public abstract class LazyFragment extends Fragment {
         super.onResume();
         Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onResume=" + index);
 
-        if (getUserVisibleHint()) {
-            if (getParentFragment() == null || getParentFragment().getUserVisibleHint()) {
-                dispatchVisibleChange(false);
-            }
-        }
+        mFragmentController.onResume();
     }
 
 
@@ -99,7 +97,7 @@ public abstract class LazyFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onPause=" + index);
-        dispatchVisibleChange(true);
+        mFragmentController.onPause();
     }
 
     @CallSuper
@@ -113,17 +111,27 @@ public abstract class LazyFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#onHiddenChanged=" + index);
-        if (rootViewCreate) {
-            dispatchVisibleChange(hidden);
-        }
+
+        mFragmentController.onHiddenChanged(hidden);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         Log.d("Brook", this.getClass().getSimpleName() + "#" + this.hashCode() + "#setUserVisibleHint(" + isVisibleToUser + ")=" + index);
-        if (rootViewCreate) {
-            dispatchVisibleChange(!isVisibleToUser);
+
+        mFragmentController.setUserVisibleHint(isVisibleToUser);
+    }
+
+    public String getUid() {
+        if (getParentFragment() instanceof LazyFragment) {
+            return ((LazyFragment) getParentFragment()).getUid() + "#" + uid;
         }
+        return uid;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(index);
     }
 }

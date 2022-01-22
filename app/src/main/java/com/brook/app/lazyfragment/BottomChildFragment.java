@@ -1,7 +1,6 @@
 package com.brook.app.lazyfragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class ChildFragment extends LazyFragment {
+public class BottomChildFragment extends LazyFragment {
 
 
     public static Fragment newInstance(int index) {
-        ChildFragment parentFragment = new ChildFragment();
+        BottomChildFragment parentFragment = new BottomChildFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("index", index);
 

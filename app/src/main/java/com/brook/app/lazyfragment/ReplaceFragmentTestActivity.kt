@@ -15,12 +15,12 @@ class ReplaceFragmentTestActivity : AppCompatActivity() {
 
     fun change(view: View) {
         if (fragment) {
-            val fragmentB = ChildFragment.newInstance(1)
+            val fragmentB = BottomChildFragment.newInstance(1)
             val beginTransaction = supportFragmentManager.beginTransaction()
             beginTransaction.replace(R.id.fragment_show_container, fragmentB)
             beginTransaction.commitNowAllowingStateLoss()
         } else {
-            val fragmentA = ChildFragment.newInstance(0)
+            val fragmentA = BottomChildFragment.newInstance(0)
             val beginTransaction = supportFragmentManager.beginTransaction()
             beginTransaction.replace(R.id.fragment_show_container, fragmentA)
             beginTransaction.commitNowAllowingStateLoss()

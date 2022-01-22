@@ -19,7 +19,7 @@ class ShowHideFragmentTestActivity : AppCompatActivity() {
     fun change(view: View) {
         if (fragment) {
             if (fragmentB == null) {
-                fragmentB = ChildFragment.newInstance(1)
+                fragmentB = BottomChildFragment.newInstance(1)
             }
             val beginTransaction = supportFragmentManager.beginTransaction()
             if (!fragmentB!!.isAdded) {
@@ -32,7 +32,7 @@ class ShowHideFragmentTestActivity : AppCompatActivity() {
             beginTransaction.commitNowAllowingStateLoss()
         } else {
             if (fragmentA == null) {
-                fragmentA = ChildFragment.newInstance(0)
+                fragmentA = BottomChildFragment.newInstance(0)
             }
             val beginTransaction = supportFragmentManager.beginTransaction()
             if (!fragmentA!!.isAdded) {

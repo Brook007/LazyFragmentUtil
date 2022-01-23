@@ -1,4 +1,4 @@
-package com.brook.app.lazyfragment;
+package com.brook.app.lazyutil;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,11 +76,6 @@ public class FragmentUserVisibleController {
                 }
             }
         }
-    }
-
-    @NonNull
-    private String getObjectName() {
-        return mTargetFragment.getClass().getSimpleName() + "#" + ((LazyFragment) mTargetFragment).getUid();
     }
 
 

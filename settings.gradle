@@ -6,6 +6,6 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
-rootProject.name = "LazyFragment"
+rootProject.name = "LazyFragmentUtil"
 include ':app'
 include ':lazyutil'

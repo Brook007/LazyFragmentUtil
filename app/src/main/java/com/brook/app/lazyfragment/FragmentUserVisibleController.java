@@ -1,23 +1,38 @@
 package com.brook.app.lazyfragment;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 
 import java.util.List;
 
-
+/**
+ * Fragment懒加载帮助工具，支持ViewPager嵌套
+ *
+ * @author brook
+ * @time 2022年01月23日16:03:22
+ */
 public class FragmentUserVisibleController {
 
     private final Fragment mTargetFragment;
+    private UserVisibleListener mUserVisibleListener = null;
+
     private volatile Boolean mLastVisibleState = null;
     private volatile boolean mIsViewCreated = false;
 
-    public FragmentUserVisibleController(Fragment fragment) {
+    public FragmentUserVisibleController(@NonNull Fragment fragment) {
         this.mTargetFragment = fragment;
+    }
+
+    public FragmentUserVisibleController(@NonNull Fragment fragment, @Nullable UserVisibleListener listener) {
+        this.mTargetFragment = fragment;
+        this.mUserVisibleListener = listener;
+    }
+
+    public void setUserVisibleListener(@Nullable UserVisibleListener listener) {
+        this.mUserVisibleListener = listener;
     }
 
     public void onResume() {
@@ -38,11 +53,12 @@ public class FragmentUserVisibleController {
         }
         mLastVisibleState = hidden;
 
-        String objectName = getObjectName();
-        if (!hidden) {
-            Log.e("Brook", objectName + "#对用户可见=" + mTargetFragment.toString());
-        } else {
-            Log.e("Brook", objectName + "#对用户不可见=" + mTargetFragment.toString());
+        if (mUserVisibleListener != null) {
+            if (!hidden) {
+                mUserVisibleListener.onUserVisible();
+            } else {
+                mUserVisibleListener.onUserInvisible();
+            }
         }
 
         if (!mTargetFragment.isAdded()) {
@@ -92,5 +108,12 @@ public class FragmentUserVisibleController {
     public interface UserVisibleControllerOwner {
         @NonNull
         FragmentUserVisibleController getController();
+    }
+
+    public interface UserVisibleListener {
+
+        void onUserVisible();
+
+        void onUserInvisible();
     }
 }

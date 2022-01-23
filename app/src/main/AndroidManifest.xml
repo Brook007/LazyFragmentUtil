@@ -24,6 +24,7 @@
         <activity android:name=".MultiFragmentViewPagerActivity" />
         <activity android:name=".ReplaceFragmentTestActivity" />
         <activity android:name=".MultiFragmentReplaceActivity" />
+        <activity android:name=".ViewPagerWithTabLayoutActivity" />
     </application>
 
 </manifest>

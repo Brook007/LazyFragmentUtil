@@ -65,4 +65,13 @@ class MainActivity : AppCompatActivity() {
             )
         )
     }
+
+    fun tabLayoutMultiViewPager(view: android.view.View) {
+        startActivity(
+            Intent(
+                this,
+                ViewPagerWithTabLayoutActivity::class.java
+            )
+        )
+    }
 }

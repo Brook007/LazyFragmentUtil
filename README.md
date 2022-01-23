@@ -23,4 +23,4 @@ dependencies {
 }
 ```
 
-3. 然后在Fragment的**构造**方法中创建FragmentUserVisibleController实例，再在Fragment中调用FragmentUserVisibleController中对应的方法，推荐在BaseFragment中使用
+3. 然后在Fragment的**构造**方法中创建FragmentUserVisibilityController实例，再在Fragment中调用FragmentUserVisibilityController中对应的方法，推荐在BaseFragment中使用

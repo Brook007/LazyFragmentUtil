@@ -12,24 +12,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.brook.app.lazyutil.FragmentUserVisibilityController;
+
 import java.util.UUID;
 
-public abstract class LazyFragment extends Fragment implements FragmentUserVisibleController.UserVisibleControllerOwner {
+public abstract class LazyFragment extends Fragment implements FragmentUserVisibilityController.UserVisibilityControllerOwner {
 
-    private final FragmentUserVisibleController mFragmentController;
+    private final FragmentUserVisibilityController mFragmentController;
     protected int index = 0;
 
     protected String uid;
 
 
     public LazyFragment() {
-        mFragmentController = new FragmentUserVisibleController(this);
+        mFragmentController = new FragmentUserVisibilityController(this);
         uid = UUID.randomUUID().toString().substring(0, 8);
     }
 
     @NonNull
     @Override
-    public FragmentUserVisibleController getController() {
+    public FragmentUserVisibilityController getController() {
         return mFragmentController;
     }
 

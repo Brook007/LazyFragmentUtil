@@ -14,25 +14,25 @@ import java.util.List;
  * @author brook
  * @time 2022年01月23日16:03:22
  */
-public class FragmentUserVisibleController {
+public class FragmentUserVisibilityController {
 
     private final Fragment mTargetFragment;
-    private UserVisibleListener mUserVisibleListener = null;
+    private UserVisibilityListener mUserVisibilityListener = null;
 
     private volatile Boolean mLastVisibleState = null;
     private volatile boolean mIsViewCreated = false;
 
-    public FragmentUserVisibleController(@NonNull Fragment fragment) {
+    public FragmentUserVisibilityController(@NonNull Fragment fragment) {
         this.mTargetFragment = fragment;
     }
 
-    public FragmentUserVisibleController(@NonNull Fragment fragment, @Nullable UserVisibleListener listener) {
+    public FragmentUserVisibilityController(@NonNull Fragment fragment, @Nullable UserVisibilityListener listener) {
         this.mTargetFragment = fragment;
-        this.mUserVisibleListener = listener;
+        this.mUserVisibilityListener = listener;
     }
 
-    public void setUserVisibleListener(@Nullable UserVisibleListener listener) {
-        this.mUserVisibleListener = listener;
+    public void setUserVisibleListener(@Nullable UserVisibilityListener listener) {
+        this.mUserVisibilityListener = listener;
     }
 
     public void onResume() {
@@ -53,11 +53,11 @@ public class FragmentUserVisibleController {
         }
         mLastVisibleState = hidden;
 
-        if (mUserVisibleListener != null) {
+        if (mUserVisibilityListener != null) {
             if (!hidden) {
-                mUserVisibleListener.onUserVisible();
+                mUserVisibilityListener.onUserVisible();
             } else {
-                mUserVisibleListener.onUserInvisible();
+                mUserVisibilityListener.onUserInvisible();
             }
         }
 
@@ -68,10 +68,10 @@ public class FragmentUserVisibleController {
         FragmentManager childFragmentManager = mTargetFragment.getChildFragmentManager();
         List<Fragment> fragments = childFragmentManager.getFragments();
         for (Fragment fragment : fragments) {
-            if (fragment instanceof UserVisibleControllerOwner) {
+            if (fragment instanceof UserVisibilityControllerOwner) {
                 if (fragment.getLifecycle().getCurrentState().ordinal() >= Lifecycle.State.RESUMED.ordinal()) {
                     if (fragment.getUserVisibleHint() != hidden) {
-                        ((UserVisibleControllerOwner) fragment).getController().dispatchVisibleChange(hidden);
+                        ((UserVisibilityControllerOwner) fragment).getController().dispatchVisibleChange(hidden);
                     }
                 }
             }
@@ -100,15 +100,21 @@ public class FragmentUserVisibleController {
         dispatchVisibleChange(!isVisibleToUser);
     }
 
-    public interface UserVisibleControllerOwner {
+    public interface UserVisibilityControllerOwner {
         @NonNull
-        FragmentUserVisibleController getController();
+        FragmentUserVisibilityController getController();
     }
 
-    public interface UserVisibleListener {
+    public interface UserVisibilityListener {
 
+        /**
+         * 当Fragment对用户可见时回调
+         */
         void onUserVisible();
 
+        /**
+         * 当Fragment对用户不可见时回调
+         */
         void onUserInvisible();
     }
 }

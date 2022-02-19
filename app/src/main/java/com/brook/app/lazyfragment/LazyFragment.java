@@ -26,6 +26,17 @@ public abstract class LazyFragment extends Fragment implements FragmentUserVisib
 
     public LazyFragment() {
         mFragmentController = new FragmentUserVisibilityController(this);
+        mFragmentController.setUserVisibleListener(new FragmentUserVisibilityController.UserVisibilityListener() {
+            @Override
+            public void onUserVisible() {
+                Log.e("Brook", LazyFragment.this.getClass().getSimpleName() + "#可见#" + LazyFragment.this.hashCode());
+            }
+
+            @Override
+            public void onUserInvisible() {
+                Log.e("Brook", LazyFragment.this.getClass().getSimpleName() + "#不可见#" + LazyFragment.this.hashCode());
+            }
+        });
         uid = UUID.randomUUID().toString().substring(0, 8);
     }
 
